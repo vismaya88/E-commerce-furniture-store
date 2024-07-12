@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>LA CASA</title>
+  <style>
+    body {
+      font-family: 'cinzel', serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      font-size: 35px;
+      background-color: #d5be8b;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0;
+    }
+
+    p {
+      font-size: 25px;
+    }
+
+    main {
+      padding: 20px;
+    }
+
+    .furniture-item {
+      display: flex;
+      margin-bottom: 20px;
+    }
+
+    .furniture-image {
+      flex: 1;
+    }
+
+    .furniture-image img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .furniture-details {
+      flex: 2;
+      padding-left: 20px;
+    }
+
+    .furniture-details h2 {
+      margin-top: 0;
+    }
+
+    .furniture-details p {
+      margin-bottom: 10px;
+    }
+
+    footer {
+      background-color: #d5be8b;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .button {
+      --background: #d5be8b;
+      --text: #fff;
+      --cart: #fff;
+      --tick: var(--background);
+      position: relative;
+      border: none;
+      background: none;
+      padding: 8px 28px;
+      border-radius: 8px;
+      -webkit-appearance: none;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-mask-image: -webkit-radial-gradient(white, black);
+      overflow: hidden;
+      cursor: pointer;
+      text-align: center;
+      min-width: 144px;
+      color: var(--text);
+      background: var(--background);
+      transform: scale(var(--scale, 1));
+      transition: transform 0.4s cubic-bezier(0.36, 1.01, 0.32, 1.27);
+    }
+
+    .button:active {
+      --scale: 0.95;
+    }
+
+    .button span {
+      font-size: 14px;
+      font-weight: 500;
+      display: block;
+      position: relative;
+      padding-left: 24px;
+      margin-left: -8px;
+      line-height: 26px;
+      transform: translateY(var(--span-y, 0));
+      transition: transform 0.7s ease;
+    }
+
+    .button span:before,
+    .button span:after {
+      content: '';
+      width: var(--w, 2px);
+      height: var(--h, 14px);
+      border-radius: 1px;
+      position: absolute;
+      left: var(--l, 8px);
+      top: var(--t, 6px);
+      background: currentColor;
+      transform: scale(0.75) rotate(var(--icon-r, 0deg)) translateY(var(--icon-y, 0));
+      transition: transform 0.65s ease 0.05s;
+    }
+
+    .button span:after {
+      --w: 14px;
+      --h: 2px;
+      --l: 2px;
+      --t: 12px;
+    }
+
+    .button .cart {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin: -13px 0 0 -18px;
+      transform-origin: 12px 23px;
+      transform: translateX(-120px) rotate(-18deg);
+    }
+
+    .button .cart:before,
+    .button .cart:after {
+      content: '';
+      position: absolute;
+    }
+
+    .button .cart:before {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      box-shadow: inset 0 0 0 2px var(--cart);
+      bottom: 0;
+      left: 9px;
+      filter: drop-shadow(11px 0 0 var(--cart));
+    }
+
+    .button .cart:after {
+      width: 16px;
+      height: 9px;
+      background: var(--cart);
+      left: 9px;
+      bottom: 7px;
+      transform-origin: 50% 100%;
+      transform: perspective(4px) rotateX(-6deg) scaleY(var(--fill, 0));
+      transition: transform 1.2s ease var(--fill-d);
+    }
+
+    .button .cart svg {
+      z-index: 1;
+      width: 36px;
+      height: 26px;
+      display: block;
+      position: relative;
+      fill: none;
+      stroke: var(--cart);
+      stroke-width: 2px;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .button .cart svg polyline:last-child {
+      stroke: var(--tick);
+      stroke-dasharray: 10px;
+      stroke-dashoffset: var(--offset, 10px);
+      transition: stroke-dashoffset 0.4s ease var(--offset-d);
+    }
+
+    .button.loading {
+      --scale: 0.95;
+      --span-y: -32px;
+      --icon-r: 180deg;
+      --fill: 1;
+      --fill-d: 0.8s;
+      --offset: 0;
+      --offset-d: 1.73s;
+    }
+
+    .button.loading .cart {
+      animation: cart 3.4s linear forwards 0.2s;
+    }
+
+    @keyframes cart {
+      12.5% {
+        transform: translateX(-60px) rotate(-18deg);
+      }
+
+      25%,
+      45%,
+      55%,
+      75% {
+        transform: none;
+      }
+
+      50% {
+        transform: scale(0.9);
+      }
+
+      44%,
+      56% {
+        transform-origin: 12px 23px;
+      }
+
+      45%,
+      55% {
+        transform-origin: 50% 50%;
+      }
+
+      87.5% {
+        transform: translateX(70px) rotate(-18deg);
+      }
+
+      100% {
+        transform: translateX(140px) rotate(-18deg);
+      }
+    }
+
+    html {
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    * {
+      box-sizing: inherit;
+    }
+
+    *:before,
+    *:after {
+      box-sizing: inherit;
+    }
+
+
+    body .dribbble {
+      position: fixed;
+      display: block;
+      right: 20px;
+      bottom: 20px;
+    }
+
+    body .dribbble img {
+      display: block;
+      height: 28px;
+    }
+
+    body .twitter {
+      position: fixed;
+      display: block;
+      right: 64px;
+      bottom: 14px;
+    }
+
+    .delete {
+      padding: 12px;
+      background-color: #CD1818;
+      color: white;
+      border: 0;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    body .twitter svg {
+      width: 32px;
+      height: 32px;
+      fill: #1da1f2;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>LIGHTS</h1>
+  </header>
+  <main>
+
+    <div class="furniture-item">
+      <div class="furniture-image">
+        <img src="images/l1.webp" alt="Furniture Item 1">
+      </div>
+      <div class="furniture-details">
+        <h1>WILLOW Globe Chandelier</h1>
+        <p>Mild steel/Gold and White(56x56x40 cm)/E-27 4W, No. of Bulbs:10</p>
+        <p>Price: $200</p>
+        <div>
+          <p>Quantity:<span>0</span></p>
+          <button class="button button1">
+            <span>Add to cart</span>
+            <div class="cart">
+              <svg viewBox="0 0 36 26">
+                <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5"></polyline>
+                <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
+              </svg>
+            </div>
+          </button>
+          <button class="delete">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="furniture-item">
+      <div class="furniture-image">
+        <img src="images/l2.webp" alt="Furniture Item 2">
+      </div>
+      <div class="furniture-details">
+        <h1>Ceiling Lights </h1>
+        <p>LED Light 2023 Trend Contemporary Crystal For Living Room Home Decoration Lighting With Remote Control</p>
+        <p>Price: $275.11</p>
+        <div>
+          <p>Quantity:<span>0</span></p>
+          <button class="button button1">
+            <span>Add to cart</span>
+            <div class="cart">
+              <svg viewBox="0 0 36 26">
+                <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5"></polyline>
+                <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
+              </svg>
+            </div>
+          </button>
+          <button class="delete">Delete</button>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="furniture-item">
+      <div class="furniture-image">
+        <img src="images/l3.webp" alt="Furniture Item 3">
+      </div>
+      <div class="furniture-details">
+        <h1>Modern Led Chandelier</h1>
+        <p>Fixture Lamps For Living Room Dining Restaurant Art Decoration Hanging Lights With Remote Control Lighting
+        </p>
+        <p>Price: $230</p>
+        <div>
+          <p>Quantity:<span>0</span></p>
+          <button class="button button1">
+            <span>Add to cart</span>
+            <div class="cart">
+              <svg viewBox="0 0 36 26">
+                <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5"></polyline>
+                <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
+              </svg>
+            </div>
+          </button>
+          <button class="delete">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="furniture-item">
+      <div class="furniture-image">
+        <img src="images/l6.jpg" alt="Furniture Item 4">
+      </div>
+      <div class="furniture-details">
+        <h1>Modern Luxury Crystal Pendant Light</h1>
+        <p>Crystal Chandelier Round Chandelier 400mm Flush Mount Ceiling Lighting Fixture for Living Room Dining Room
+          Table Restaurant, Lights,Gold</p>
+        <p>Price: $60</p>
+        <div>
+          <p>Quantity:<span>0</span></p>
+          <button class="button button1">
+            <span>Add to cart</span>
+            <div class="cart">
+              <svg viewBox="0 0 36 26">
+                <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5"></polyline>
+                <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
+              </svg>
+            </div>
+          </button>
+          <button class="delete">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="furniture-item">
+      <div class="furniture-image">
+        <img src="images/l5.jpg" alt="Furniture Item 5">
+      </div>
+      <div class="furniture-details">
+        <h1>Crystofalcan Modern W-8" Crystal Chandelier</h1>
+        <p>Yellow LED Light Decorative Ceiling Light for Living Room/Bedroom/Hall/Resort/Hotel/Office M17</p>
+        <p>Price: $17.68</p>
+        <div>
+          <p>Quantity:<span>0</span></p>
+          <button class="button button1">
+            <span>Add to cart</span>
+            <div class="cart">
+              <svg viewBox="0 0 36 26">
+                <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5"></polyline>
+                <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
+              </svg>
+            </div>
+          </button>
+          <button class="delete">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="furniture-item">
+      <div class="furniture-image">
+        <img src="images/l4.jpg" alt="Furniture Item 6">
+      </div>
+      <div class="furniture-details">
+        <h1>Globe Hanging Ceiling Fixture</h1>
+        <p>Stylish Living Bedroom Dining Table Lamp Lobby, Balcony Hanging Pendent Light for Home Decoration (Bulb
+          Included) (Triple Cluster Round Plate) With Bulb</p>
+        <p>Price: $11</p>
+        <div>
+          <p>Quantity:<span>0</span></p>
+          <button class="button button1">
+            <span>Add to cart</span>
+            <div class="cart">
+              <svg viewBox="0 0 36 26">
+                <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5"></polyline>
+                <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
+              </svg>
+            </div>
+          </button>
+          <button class="delete">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="furniture-item">
+      <div class="furniture-image">
+        <img src="images/l7.webp" alt="Furniture Item 7">
+      </div>
+      <div class="furniture-details">
+        <h1>LED CHANDELIER</h1>
+        <p>8 LIGHT BLACK GREY BODY/ FOR DRAWING LIVING ROOM LIGHT - WARM WHITE</p>
+        <p>Price: $150</p>
+        <div>
+          <p>Quantity:<span>0</span></p>
+          <button class="button button1">
+            <span>Add to cart</span>
+            <div class="cart">
+              <svg viewBox="0 0 36 26">
+                <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5"></polyline>
+                <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
+              </svg>
+            </div>
+          </button>
+          <button class="delete">Delete</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+  <footer>
+    <p>&copy; 2023 Online Furniture Store. All rights reserved.</p>
+  </footer>
+  <script>
+
+
+
+    document.querySelectorAll('.button1').forEach(occurence => {
+      occurence.addEventListener('click', (e) => {
+        let element = e.target;
+        console.log(element)
+        let parent = element.closest("div");
+        console.log(parent)
+        let quantity = parent.querySelector('span')
+        console.log(quantity)
+        quantity.innerText = +quantity.innerText + 1
+      });
+    });
+
+    document.querySelectorAll('.delete').forEach(occurence => {
+      occurence.addEventListener('click', (e) => {
+        let element = e.target;
+        console.log(element)
+        let parent = element.closest("div");
+        console.log(parent)
+        let quantity = parent.querySelector('span')
+        console.log(quantity)
+        quantity.innerText = +0
+      });
+    });
+
+
+    document.querySelectorAll(".button").forEach((button) =>
+      button.addEventListener("click", (e) => {
+        if (!button.classList.contains("loading")) {
+          button.classList.add("loading");
+          setTimeout(() => button.classList.remove("loading"), 3700);
+        }
+        e.preventDefault();
+      })
+    );
+  </script>
+</body>
+
+</html>

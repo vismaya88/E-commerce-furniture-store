@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>LA CASA</title>
+  <style>
+    body {
+      font-family: 'cinzel', serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      font-size: 35px;
+      background-color: #d5be8b;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0;
+    }
+
+    p {
+      font-size: 25px;
+    }
+
+    main {
+      padding: 20px;
+    }
+
+    .furniture-item {
+      display: flex;
+      margin-bottom: 20px;
+    }
+
+    .furniture-image {
+      flex: 1;
+    }
+
+    .furniture-image img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .delete {
+      padding: 12px;
+      background-color: #CD1818;
+      color: white;
+      border: 0;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .furniture-details {
+      flex: 2;
+      padding-left: 20px;
+    }
+
+    .furniture-details h2 {
+      margin-top: 0;
+    }
+
+    .furniture-details p {
+      margin-bottom: 10px;
+    }
+
+    footer {
+      background-color: #d5be8b;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .button {
+      --background: #d5be8b;
+      --text: #fff;
+      --cart: #fff;
+      --tick: var(--background);
+      position: relative;
+      border: none;
+      background: none;
+      padding: 8px 28px;
+      border-radius: 8px;
+      -webkit-appearance: none;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-mask-image: -webkit-radial-gradient(white, black);
+      overflow: hidden;
+      cursor: pointer;
+      text-align: center;
+      min-width: 144px;
+      color: var(--text);
+      background: var(--background);
+      transform: scale(var(--scale, 1));
+      transition: transform 0.4s cubic-bezier(0.36, 1.01, 0.32, 1.27);
+    }
+
+    .button:active {
+      --scale: 0.95;
+    }
+
+    .button span {
+      font-size: 14px;
+      font-weight: 500;
+      display: block;
+      position: relative;
+      padding-left: 24px;
+      margin-left: -8px;
+      line-height: 26px;
+      transform: translateY(var(--span-y, 0));
+      transition: transform 0.7s ease;
+    }
+
+    .button span:before,
+    .button span:after {
+      content: '';
+      width: var(--w, 2px);
+      height: var(--h, 14px);
+      border-radius: 1px;
+      position: absolute;
+      left: var(--l, 8px);
+      top: var(--t, 6px);
+      background: currentColor;
+      transform: scale(0.75) rotate(var(--icon-r, 0deg)) translateY(var(--icon-y, 0));
+      transition: transform 0.65s ease 0.05s;
+    }
+
+    .button span:after {
+      --w: 14px;
+      --h: 2px;
+      --l: 2px;
+      --t: 12px;
+    }
+
+    .button .cart {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin: -13px 0 0 -18px;
+      transform-origin: 12px 23px;
+      transform: translateX(-120px) rotate(-18deg);
+    }
+
+    .button .cart:before,
+    .button .cart:after {
+      content: '';
+      position: absolute;
+    }
+
+    .button .cart:before {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      box-shadow: inset 0 0 0 2px var(--cart);
+      bottom: 0;
+      left: 9px;
+      filter: drop-shadow(11px 0 0 var(--cart));
+    }
+
+    .button .cart:after {
+      width: 16px;
+      height: 9px;
+      background: var(--cart);
+      left: 9px;
+      bottom: 7px;
+      transform-origin: 50% 100%;
+      transform: perspective(4px) rotateX(-6deg) scaleY(var(--fill, 0));
+      transition: transform 1.2s ease var(--fill-d);
+    }
+
+    .button .cart svg {
+      z-index: 1;
+      width: 36px;
+      height: 26px;
+      display: block;
+      position: relative;
+      fill: none;
+      stroke: var(--cart);
+      stroke-width: 2px;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .button .cart svg polyline:last-child {
+      stroke: var(--tick);
+      stroke-dasharray: 10px;
+      stroke-dashoffset: var(--offset, 10px);
+      transition: stroke-dashoffset 0.4s ease var(--offset-d);
+    }
+
+    .button.loading {
+      --scale: 0.95;
+      --span-y: -32px;
+      --icon-r: 180deg;
+      --fill: 1;
+      --fill-d: 0.8s;
+      --offset: 0;
+      --offset-d: 1.73s;
+    }
+
+    .button.loading .cart {
+      animation: cart 3.4s linear forwards 0.2s;
+    }
+
+    @keyframes cart {
+      12.5% {
+        transform: translateX(-60px) rotate(-18deg);
+      }
+
+      25%,
+      45%,
+      55%,
+      75% {
+        transform: none;
+      }
+
+      50% {
+        transform: scale(0.9);
+      }
+
+      44%,
+      56% {
+        transform-origin: 12px 23px;
+      }
+
+      45%,
+      55% {
+        transform-origin: 50% 50%;
+      }
+
+      87.5% {
+        transform: translateX(70px) rotate(-18deg);
+      }
+
+      100% {
+        transform: translateX(140px) rotate(-18deg);
+      }
+    }
+
+    html {
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    * {
+      box-sizing: inherit;
+    }
+
+    *:before,
+    *:after {
+      box-sizing: inherit;
+    }
+
+
+    body .dribbble {
+      position: fixed;
+      display: block;
+      right: 20px;
+      bottom: 20px;
+    }
+
+    body .dribbble img {
+      display: block;
+      height: 28px;
+    }
+
+    body .twitter {
+      position: fixed;
+      display: block;
+      right: 64px;
+      bottom: 14px;
+    }
+
+    body .twitter svg {
+      width: 32px;
+      height: 32px;
+      fill: #1da1f2;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>CHAIR</h1>
+  </header>
+  <main>
+
+    <div class="furniture-item">
+      <div class="furniture-image">
+        <img src="images/c1.webp" alt="Furniture Item 2">
+      </div>
+      <div class="furniture-details">
+        <h1>Swing Chair</h1>
+        <p>Swing Hammock Chair for Adults & Kids Large TOPW12 - Hammock Chair for Adults & Kids Large, with accesories
+          Tufted Soft Deep Cushion Backyard Relax for Indoor, Outdoor, Balcony, Deck, Patio, Home, White COLLOR,TOPW12
+        </p>
+        <p>Price: $199</p>
+        <div>
+          <p>Quantity:<span>0</span></p>
+          <button class="button button1">
+            <span>Add to cart</span>
+            <div class="cart">
+              <svg viewBox="0 0 36 26">
+                <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5"></polyline>
+                <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
+              </svg>
+            </div>
+          </button>
+          <button class="delete">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="furniture-item">
+      <div class="furniture-image">
+        <img src="images/c2.webp" alt="Furniture Item 2">
+      </div>
+      <div class="furniture-details">
+        <h1>Chair Set</h1>
+        <p>The Curve Wooden Dining Chair Set of 4 - Solid Wood Mapre Dining Chair with Beige Cushion Colour: Light Brown
+          Dimensions (In Centimeters)H 87.9 x W 46 x D 49.8 Dimensions(In Inches)H 34.6 x W 18.1 x D 19.6 Ideal for -
+          Dining Table Chair</p>
+        <p>Price: $200</p>
+        <div>
+          <p>Quantity:<span>0</span></p>
+          <button class="button button1">
+            <span>Add to cart</span>
+            <div class="cart">
+              <svg viewBox="0 0 36 26">
+                <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5"></polyline>
+                <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
+              </svg>
+            </div>
+          </button>
+          <button class="delete">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="furniture-item">
+      <div class="furniture-image">
+        <img src="images/c4.webp" alt="Furniture Item 2">
+      </div>
+      <div class="furniture-details">
+        <h1>Bamboo Chair</h1>
+        <p>Bamboo Cane Apple Chair, Room Chair, Lawn Chair, Balcony Chair with Cushion - Cane Apple Chair with Cushion
+          Suitable for Breakfast , Kitchen , Reception areas, Terrace , Living Room, Dining Room, Cafe, Pubs, Bars,
+          Restaurants, Indoor / Outdoor</p>
+        <p>Price: $110</p>
+        <div>
+          <p>Quantity:<span>0</span></p>
+          <button class="button button1">
+            <span>Add to cart</span>
+            <div class="cart">
+              <svg viewBox="0 0 36 26">
+                <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5"></polyline>
+                <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
+              </svg>
+            </div>
+          </button>
+          <button class="delete">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="furniture-item">
+      <div class="furniture-image">
+        <img src="images/c3.webp" alt="Furniture Item 2">
+      </div>
+      <div class="furniture-details">
+        <h1>Arm Chair</h1>
+        <p>Wooden Bazar Enrico Fabric Upholstered Arm Chair Brown - Lightweight but sturdy, well made of slogan
+          leatherette fabric. You can even use the key armchairs as occasional or home office chairs, side chairs in the
+          living room, dining room, bedroom, lobby, reception, waiting room, and banquet.</p>
+        <p>Price: $99</p>
+        <div>
+          <p>Quantity:<span>0</span></p>
+          <button class="button button1">
+            <span>Add to cart</span>
+            <div class="cart">
+              <svg viewBox="0 0 36 26">
+                <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5"></polyline>
+                <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
+              </svg>
+            </div>
+          </button>
+          <button class="delete">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="furniture-item">
+      <div class="furniture-image">
+        <img src="images/c5.webp" alt="Furniture Item 2">
+      </div>
+      <div class="furniture-details">
+        <h1>Wing Chair</h1>
+        <p>Wakefit Nicco Wing Chair Solid Wood Living Room Chair - While Curating The Collection Of Wing Chairs, We
+          Thought Of The Design As Well As The Functionality. Our Wing Chairs Can Jazz Up Any Corner Of Your House And
+          Create A Cozy Nook For You To Read Books, Chit Chat With A Friend, Or Watch Your Favorite Movie.</p>
+        <p>Price: $216</p>
+        <div>
+          <p>Quantity:<span>0</span></p>
+          <button class="button button1">
+            <span>Add to cart</span>
+            <div class="cart">
+              <svg viewBox="0 0 36 26">
+                <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5"></polyline>
+                <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
+              </svg>
+            </div>
+          </button>
+          <button class="delete">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="furniture-item">
+      <div class="furniture-image">
+        <img src="images/c6.webp">
+      </div>
+      <div class="furniture-details">
+        <h1>Slipper Chair</h1>
+        <p>While Curating The Collection Of Wing Chairs - We Thought Of The Design As Well As The Functionality. Our
+          Wing Chairs Can Jazz Up Any Corner Of Your House And Create A Cozy Nook For You To Read Books, Chit Chat With
+          A Friend, Or Watch Your Favorite Movie</p>
+        <p>Price: $250</p>
+        <div>
+          <p>Quantity:<span>0</span></p>
+          <button class="button button1">
+            <span>Add to cart</span>
+            <div class="cart">
+              <svg viewBox="0 0 36 26">
+                <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5"></polyline>
+                <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
+              </svg>
+            </div>
+          </button>
+          <button class="delete">Delete</button>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="furniture-item">
+      <div class="furniture-image">
+        <img src="images/c7.webp" alt="Furniture Item 2">
+      </div>
+      <div class="furniture-details">
+        <h1>Recliner Chair</h1>
+        <p>Gharnish Luxury Motorized Recliner Chair with USB Charging GHR008 - Recliner Chair HyderBd: A premium
+          leatherette reclining chair with diamond tufting is about to become the star of your living area. Its
+          attractive chestnut brown color makes it easy to blend right into your current living area decor. Use the
+          push-button mechanism to put it up your feet, making this leather recliner the best seat in the house.</p>
+        <p>Price: $500</p>
+        <div>
+          <p>Quantity:<span>0</span></p>
+          <button class="button button1">
+            <span>Add to cart</span>
+            <div class="cart">
+              <svg viewBox="0 0 36 26">
+                <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5"></polyline>
+                <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
+              </svg>
+            </div>
+          </button>
+          <button class="delete">Delete</button>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+  </main>
+  <footer>
+    <p>&copy; 2023 Online Furniture Store. All rights reserved.</p>
+  </footer>
+  <script>
+
+    document.querySelectorAll('.button1').forEach(occurence => {
+      occurence.addEventListener('click', (e) => {
+        let element = e.target;
+        console.log(element)
+        let parent = element.closest("div");
+        console.log(parent)
+        let quantity = parent.querySelector('span')
+        console.log(quantity)
+        quantity.innerText = +quantity.innerText + 1
+      });
+    });
+
+    document.querySelectorAll('.delete').forEach(occurence => {
+      occurence.addEventListener('click', (e) => {
+        let element = e.target;
+        console.log(element)
+        let parent = element.closest("div");
+        console.log(parent)
+        let quantity = parent.querySelector('span')
+        console.log(quantity)
+        quantity.innerText = +0
+      });
+    });
+    document.querySelectorAll(".button").forEach((button) =>
+      button.addEventListener("click", (e) => {
+        if (!button.classList.contains("loading")) {
+          button.classList.add("loading");
+          setTimeout(() => button.classList.remove("loading"), 3700);
+        }
+        e.preventDefault();
+      })
+    );
+  </script>
+</body>
+
+</html>
